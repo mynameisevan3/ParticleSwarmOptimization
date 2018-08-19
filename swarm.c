@@ -1,9 +1,11 @@
 
-/*============================================================
-    Particle Swarm Optimization swarm functions
+/*=====================================
+    Particle Swarm Optimization
+    Swarm Functions
     mtj@cogitollc.com
-    Used and Modified with Permission By Evan William Gretok
-  ============================================================
+    Used and Modified with Permission
+    Evan William Gretok
+  =====================================
    Copyright (c) 2003-2005 Charles River Media.  All rights reserved.
 
    Redistribution and use in source and binary forms, with or
@@ -38,6 +40,7 @@
 
 
 // Inclusions
+#include <omp.h>
 #include <stdio.h>
 #include "pso.h"
 
@@ -45,12 +48,7 @@
 // Function Implementations
 
 // moveParticle - conducts the...movement of...particles...
-void moveParticle( int i, particle_t* particles, particle_t* pbest ) {
-  extern double     c1;
-  extern double     c2;
-  extern double     dt;
-  extern particle_t gbest;
-  extern double     checkFitness( double, double );
+void moveParticle( int i, double* c1, double* c2, double* dt, particle_t* particles, particle_t* pbest, particle_t* gbest ) {
 
   // Update the Position of the Particle
   particles[i].position.x += ( particles[i].velocity.x * dt );
@@ -82,16 +80,15 @@ void moveParticle( int i, particle_t* particles, particle_t* pbest ) {
 }
 
 // moveSwarm - conduct movement of each particle in the swarm.
-void moveSwarm( particle_t* particles, particle_t* pbest ) {
+void moveSwarm( double* c1, double* c2, double* dt, int* numParticles, particle_t* particles, particle_t* pbest, particle_t* gbest ) {
   int j = 0;
-  extern void storePbest( int, particle_t*, particle_t* );
 
   // Move Each Particle in the Swarm
-  for ( j = 0; j < MAX_PARTICLES; j++ ) {
-    moveParticle( j, particles, pbest );
+  for ( j = 0; j < numParticles; j++ ) {
+    moveParticle( j, c1, c2, dt, particles, pbest, gbest );
     if( particles[j].fitness > pbest[j].fitness ) {
-      storePbest( j, particles, pbest );
-	}
+      storePbest( j, particles, pbest, gbest );
+    }
   }
 
   return;

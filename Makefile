@@ -4,7 +4,7 @@
 ################################################################
 
 CC = gcc
-CFLAGS = -Wall -fopenmp -O2
+CFLAGS = -Wall -Wextra -fopenmp -O2
 OBJS =	main.o init.o fitness.o swarm.o
 
 ################################################################

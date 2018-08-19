@@ -1,7 +1,7 @@
 
 /*=====================================
     Particle Swarm Optimization
-    Main
+    Fitness Functions Header
     mtj@cogitollc.com
     Used and Modified with Permission
     Evan William Gretok
@@ -39,73 +39,23 @@
   =====================================*/
 
 
+// Include Guard
+#ifndef __FITNESS_H__
+#define __FITNESS_H__
+
+
 // Inclusions
-#include <omp.h>
-#include <stdio.h>
-#include <time.h>
-#include "fitness.h"
+#include <stdlib.h>
 #include "init.h"
-#include "pso.h"
-#include "swarm.h"
 
 
-// Main
-int main( int argc, char *argv[] ) {
+// Function Prototypes
+double checkFitness( double x, double y );
 
-  // Acceleration and dt Constants
-  double c1            = 0.25;
-  double c2            = 1.0;
-  double dt            = 0.1;
-  int    numParticles  = 0;
-  int    numIterations = 0;
-  // Global Best Particle
-  particle_t gbest;
 
-  // Parse Input Parameters
-  // Global weight c1, personal weight c2, numParticles, and numIterations.
-  // Ensures parameters were indeed passed.
-  if( argc != 5 ) {
-    // Warn if nothing was passed.
-    printf( "WARNING - You passed no parameters for c1, c2, particle count, or timesteps!\n" );
-    return -1;
-  } else {
-    // Takes n as that is specifically mentioned in the assignment.
-    c1            = atof( argv[1] );
-    c2            = atof( argv[2] );
-    numParticles  = atoi( argv[3] );
-    numIterations = atoi( argv[4] );
-  }
-
-  // Create arrays in main dynamically based on input parameters.
-  particle_t particles[numParticles];
-  particle_t pbest[numParticles];
-
-  int iter;
-
-//  extern void initPopulation( particle_t* particles, particle_t* pbest );
-//  extern void moveSwarm( particle_t* particles, particle_t* pbest );
-//  extern void closePopulation( particle_t* particles );
-
-  // Seed the random number generator.
-  srand( time( NULL ) );
-
-  // Initialize the swarm.
-  initPopulation( &numParticles, particles, pbest, &gbest );
-
-  // Perform NUM_ITERATIONS number of iterations.
-  for( iter = 0; iter < numIterations; iter++ ) {
-
-    moveSwarm( &c1, &c2, &dt, &numParticles, particles, pbest, &gbest );
-    printf( "%lg\n", gbest.fitness );
-
-  }
-
-  // Cleanup the swarm .
-  closePopulation( &numParticles, particles );
-
-  return 0;
-}
+// End Include Guard
+#endif
 
 
 
-// End main.c  - EWG SDG
+// END pso.h  - EWG SDG

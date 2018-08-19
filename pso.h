@@ -1,9 +1,11 @@
 
-/*============================================================
-    Particle Swarm Optimization Types and Symbolics
+/*=====================================
+    Particle Swarm Optimization
+    Types and Symbolics
     mtj@cogitollc.com
-    Used and Modified with Permission by Evan William Gretok
-  ============================================================
+    Used and Modified with Permission
+    Evan William Gretok
+  =====================================
     Copyright (c) 2003-2005 Charles River Media.  All rights reserved.
 
     Redistribution and use in source and binary forms, with or
@@ -37,6 +39,11 @@
   =====================================*/
 
 
+// Include Guard
+#ifndef __PSO_H__
+#define __PSO_H__
+
+
 // Inclusions
 #include <stdlib.h>
 
@@ -60,8 +67,9 @@ typedef struct {
   double fitness;
 } particle_t;
 
-int MAX_PARTICLES;
-int NUM_ITERATIONS;
+
+// End Include Guard
+#endif
 
 
 

@@ -4,7 +4,7 @@
     Fitness Function
     mtj@cogitollc.com
     Used and Modified With Permission
-      By Evan William Gretok
+    Evan William Gretok
   =====================================
     Copyright (c) 2003-2005 Charles River Media.  All rights reserved.
 
