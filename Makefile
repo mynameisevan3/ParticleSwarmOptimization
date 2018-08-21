@@ -3,9 +3,9 @@
 # Makefile for Particle Swarm Optimization Program
 ################################################################
 
-CC = gcc
-CFLAGS = -Wall -Wextra -fopenmp -O2
-OBJS =	main.o init.o fitness.o swarm.o
+CFLAGS  += -Wall -Wextra -fopenmp -O2
+LDFLAGS += -lm
+OBJS    += main.o init.o fitness.o swarm.o
 
 ################################################################
 # Make all
@@ -16,13 +16,13 @@ all:	swarm
 # Make Swarm
 
 swarm: $(OBJS) pso.h
-	$(CC) -o swarm $(OBJS) -lm
+	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $@
 
 
 ################################################################
 
 .c.o:
-	$(CC) $(CFLAGS) $<
+	$(CC) -c $(CFLAGS) $<
 
 ################################################################
 # Make Clean
