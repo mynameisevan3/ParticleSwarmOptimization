@@ -50,9 +50,9 @@
 
 
 // Function Prototypes
-void storePbest( int index, particle_t* particles, particle_t* pbest, particle_t* gbest );
-void initPopulation( int* numParticles, particle_t* particles, particle_t* pbest, particle_t* gbest );
-void closePopulation( int* numParticles, particle_t* particles );
+void storePbest( int *index, particle_t *particles, particle_t *pbest, particle_t *gbest );
+void initPopulation( int *numParticles, particle_t *particles, particle_t *pbest, particle_t *gbest );
+void closePopulation( int *numParticles, particle_t *particles );
 
 
 // End Include Guard

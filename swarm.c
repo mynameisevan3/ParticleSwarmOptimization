@@ -42,52 +42,55 @@
 // Inclusions
 #include <omp.h>
 #include <stdio.h>
+#include "fitness.h"
 #include "pso.h"
+#include "swarm.h"
 
 
 // Function Implementations
 
 // moveParticle - conducts the...movement of...particles...
-void moveParticle( int i, double* c1, double* c2, double* dt, particle_t* particles, particle_t* pbest, particle_t* gbest ) {
+void moveParticle( int *i, double *c1, double *c2, double *dt, particle_t *particles, particle_t *pbest, particle_t *gbest ) {
 
   // Update the Position of the Particle
-  particles[i].position.x += ( particles[i].velocity.x * dt );
-  particles[i].position.y += ( particles[i].velocity.y * dt );
+  ( particles + *i ) -> position.x += ( particles + *i ) -> velocity.x * ( *dt ) );
+  ( particles + *i ) -> position.y += ( particles + *i ) -> velocity.y * ( *dt ) );
 
   // Since we're interested only in the -5 to 5 range, we'll calculate fitness only over this range.
-  if ( ( particles[i].position.x > (-5.0 ) ) &&
-       ( particles[i].position.x < ( 5.0 ) ) &&
-       ( particles[i].position.y > (-5.0 ) ) &&
-       ( particles[i].position.y < ( 5.0 ) )    ) {
-    particles[i].fitness = checkFitness( particles[i].position.x, particles[i].position.y );
+  if ( ( ( particles + *i ) -> position.x > (-5.0 ) ) &&
+       ( ( particles + *i ) -> position.x < ( 5.0 ) ) &&
+       ( ( particles + *i ) -> position.y > (-5.0 ) ) &&
+       ( ( particles + *i ) -> position.y < ( 5.0 ) )    ) {
+    ( particles + *i ) -> fitness = checkFitness( ( particles + *i ) -> position.x, ( particles + *i ) -> position.y );
   }
 
   // Write the particle's position and fitness to the trace file.
-  fprintf( particles[i].fp, "%lg, %lg, %lg\n",
-           particles[i].position.x, particles[i].position.y,
-           particles[i].fitness                              );
+  fprintf( ( particles + *i ) -> fp, "%lg, %lg, %lg\n",
+           ( particles + *i ) -> position.x,
+           ( particles + *i ) -> position.y,
+           ( particles + *i ) -> fitness                 );
 
   // Update the velocity vector of the particle.
   particles[i].velocity.x +=
-    ( ( c1 * getSRand( ) * ( gbest.position.x - particles[i].position.x) ) +
-      ( c2 * getSRand( ) * ( pbest[i].position.x - particles[i].position.x) ) );
+    ( ( c1 * getSRand( ) * ( ( gbest -> position.x ) - ( ( particles + *i ) -> position.x ) ) ) +
+      ( c2 * getSRand( ) * ( ( ( pbest + *i ) -> position.x ) - ( ( particles + *i ) -> position.x ) ) ) );
 
   particles[i].velocity.y +=
-    ( ( c1 * getSRand( ) * ( gbest.position.y - particles[i].position.y ) ) +
-      ( c2 * getSRand( ) * ( pbest[i].position.y - particles[i].position.y ) ) );
+    ( ( c1 * getSRand( ) * ( ( gbest -> position.y ) - ( ( particles + *i ) -> position.y ) ) ) +
+      ( c2 * getSRand( ) * ( ( ( pbest + *i ) -> position.y ) - ( ( particles + *i ) -> position.y ) ) ) );
 
   return;
 }
 
 // moveSwarm - conduct movement of each particle in the swarm.
-void moveSwarm( double* c1, double* c2, double* dt, int* numParticles, particle_t* particles, particle_t* pbest, particle_t* gbest ) {
+void moveSwarm( double *c1, double *c2, double *dt, int *numParticles, particle_t *particles, particle_t *pbest, particle_t *gbest ) {
   int j = 0;
 
   // Move Each Particle in the Swarm
-  for ( j = 0; j < numParticles; j++ ) {
-    moveParticle( j, c1, c2, dt, particles, pbest, gbest );
-    if( particles[j].fitness > pbest[j].fitness ) {
-      storePbest( j, particles, pbest, gbest );
+  for ( j = 0; j < ( *numParticles ); j++ ) {
+    moveParticle( &j, c1, c2, dt, particles, pbest, gbest );
+    if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
+      storePbest( &j, particles, pbest, gbest );
     }
   }
 

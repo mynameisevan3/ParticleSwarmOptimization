@@ -53,17 +53,15 @@
 int main( int argc, char *argv[] ) {
 
   // Acceleration and dt Constants
-  double c1            = 0.25;
-  double c2            = 1.0;
-  double dt            = 0.1;
-  int    numParticles  = 0;
-  int    numIterations = 0;
-  // Global Best Particle
-  particle_t gbest;
+  double     c1            = 0.25;  // Global Weight
+  double     c2            = 1.0;   // Personal Weight
+  double     dt            = 0.1;   // Delta
+  int        i             = 0;     // Loop Iteration
+  int        numParticles  = 0;     // Number of Particles
+  int        numIterations = 0;     // Number of Iterations
+  particle_t gbest;                 // Global Best Particle Tracker
 
   // Parse Input Parameters
-  // Global weight c1, personal weight c2, numParticles, and numIterations.
-  // Ensures parameters were indeed passed.
   if( argc != 5 ) {
     // Warn if nothing was passed.
     printf( "WARNING - You passed no parameters for c1, c2, particle count, or timesteps!\n" );
@@ -76,31 +74,23 @@ int main( int argc, char *argv[] ) {
     numIterations = atoi( argv[4] );
   }
 
-  // Create arrays in main dynamically based on input parameters.
+  // Create Arrays Dynamically Based on Input Parameters
   particle_t particles[numParticles];
   particle_t pbest[numParticles];
 
-  int iter;
-
-//  extern void initPopulation( particle_t* particles, particle_t* pbest );
-//  extern void moveSwarm( particle_t* particles, particle_t* pbest );
-//  extern void closePopulation( particle_t* particles );
-
-  // Seed the random number generator.
+  // Seed Random Number Generator
   srand( time( NULL ) );
 
-  // Initialize the swarm.
+  // Initialize Swarm
   initPopulation( &numParticles, particles, pbest, &gbest );
 
-  // Perform NUM_ITERATIONS number of iterations.
-  for( iter = 0; iter < numIterations; iter++ ) {
-
+  // Perform Particle Swarm Operation
+  for( i = 0; i < numIterations; i++ ) {
     moveSwarm( &c1, &c2, &dt, &numParticles, particles, pbest, &gbest );
     printf( "%lg\n", gbest.fitness );
-
   }
 
-  // Cleanup the swarm .
+  // Cleanup Swarm
   closePopulation( &numParticles, particles );
 
   return 0;

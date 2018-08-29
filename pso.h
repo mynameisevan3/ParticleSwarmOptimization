@@ -50,7 +50,7 @@
 
 // Definitions
 #define getSRand()	( (double)rand( ) / (double)RAND_MAX )
-#define PI		    ( (double)3.1415926 )
+#define PI		      ( (double)3.1415926 )
 #define getPoint()	( ( (10.0) * getSRand( ) ) - ( 5.0 ) )
 
 
@@ -61,10 +61,10 @@ typedef struct {
 } vector_t;
 
 typedef struct {
-  FILE *fp;
-  vector_t position;
-  vector_t velocity;
-  double fitness;
+  FILE     *fp;
+  vector_t  position;
+  vector_t  velocity;
+  double    fitness;
 } particle_t;
 
 

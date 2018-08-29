@@ -44,6 +44,8 @@
 #include <stdio.h>
 #include <string.h>
 #include <fcntl.h>
+#include "fitness.h"
+#include "init.h"
 #include "pso.h"
 
 
@@ -52,57 +54,57 @@
 
 // Array of particles within the solution space definitions moved to main.
 
-void storePbest( int index, particle_t* particles, particle_t* pbest, particle_t* gbest ) {
+void storePbest( int *index, particle_t *particles, particle_t *pbest, particle_t *gbest ) {
   // Save the particle to its personal best.
-  memcpy( (void *)&pbest[index], (void *)&particles[index], sizeof(particle_t) );
-  // If this pbest is better than the gbest, save it.
-  if( pbest[index].fitness > gbest.fitness ) {
-    gbest.position.x = pbest[index].position.x;
-    gbest.position.y = pbest[index].position.y;
-    gbest.fitness    = pbest[index].fitness;
+  memcpy( (void *)( pbest + ( *index ) ), (void *)( particles + ( *index ) ), sizeof( *particle_t ) );
+  // If this pbest is better than gbest, save it.
+  if( ( ( pbest + ( *index) ) -> fitness ) > ( gbest -> fitness ) ) {
+    gbest -> position.x = ( pbest + ( *index ) ) -> position.x;
+    gbest -> position.y = ( pbest + ( *index ) ) -> position.y;
+    gbest -> fitness    = ( pbest + ( *index ) ) -> fitness;
   }
   return;
 }
 
 // initPopulation - Initialize files, positions, and velocities for each particle.
-void initPopulation( int* numParticles, particle_t* particles, particle_t* pbest, particle_t* gbest ) {
-  int    i;
-  char   filename[MAX_FILENAME+1];
+void initPopulation( int *numParticles, particle_t *particles, particle_t *pbest, particle_t *gbest ) {
+  int  i = 0;
+  char filename[ MAX_FILENAME + 1 ];
 
-  gbest.fitness = (double)-9999.0;
+  gbest -> fitness = (double)( -9999.0 );
 
-  for( i = 0; i < *numParticles; i++ ) {
+  for( i = 0; i < ( *numParticles ); i++ ) {
 
-    // Initialize the output file pointer.
+    // Initialize the Output File Pointer
     sprintf( filename, "particle%02d.txt", i );
     particles[i].fp = fopen( filename, "w" );
 
-    // Initialize a particle's starting point and fitness.
-    particles[i].position.x = getPoint( );
-    particles[i].position.y = getPoint( );
-    particles[i].fitness    = checkFitness( particles[i].position.x, particles[i].position.y );
-
-    // Initialize the particle's dimensional velocity.
-    particles[i].velocity.x = ( getSRand( ) / (double)10.0 );
-    particles[i].velocity.y = ( getSRand( ) / (double)10.0 );
+    // Initialize Particle Starting Point and Fitness.
+    ( particles + i ) -> position.x = getPoint( );
+    ( particles + i ) -> position.y = getPoint( );
+    ( particles + i ) -> fitness    = checkFitness( &( particles + i ) -> position.x, &( particles + i ) -> position.y );
+    // Initialize Particle Dimensional Velocity
+    ( particles + i ) -> velocity.x = ( getSRand( ) / (double)10.0 );
+    ( particles + i ) -> velocity.y = ( getSRand( ) / (double)10.0 );
 
     // Since this is the only fitness value, store this as pbest.
-    storePbest( i, particles, pbest, gbest );
+    storePbest( &i, particles, pbest, gbest );
 
-    // Store this position to the particles trace file.
-    fprintf( particles[i].fp, "%lg, %lg, %lg\n",
-             particles[i].position.x, particles[i].position.y,
-             particles[i].fitness );
+    // Store Position to Particle Trace File
+    fprintf( ( particles + i ) -> fp, "%lg, %lg, %lg\n",
+             ( particles + i ) -> position.x,
+             ( particles + i ) -> position.y,
+             ( particles + i ) -> fitness );
   }
   return;
 }
 
 
 // closePopulation - close files for each particle.
-void closePopulation( int* numParticles, particle_t* particles ) {
-  int i;
-  for( i = 0; i < *numParticles; i++ ) {
-    fclose( particles[i].fp );
+void closePopulation( int *numParticles, particle_t *particles ) {
+  int i = 0;
+  for( i = 0; i < ( *numParticles ); i++ ) {
+    fclose( ( particles + i ) -> fp );
   }
   return;
 }

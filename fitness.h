@@ -50,7 +50,7 @@
 
 
 // Function Prototypes
-double checkFitness( double x, double y );
+double checkFitness( double *x, double *y );
 
 
 // End Include Guard
