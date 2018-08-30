@@ -54,24 +54,35 @@ int main( int argc, char *argv[] ) {
 
   // Acceleration and dt Constants
   double     c1            = 0.25;  // Global Weight
-  double     c2            = 1.0;   // Personal Weight
-  double     dt            = 0.1;   // Delta
+  double     c2            = 1.0;   // Local Weight
+  double     dt            = 0.1;   // Delta Factor for Position Change
+  int        display       = 0;     // Flag to Display Debug Text
   int        i             = 0;     // Loop Iteration
   int        numParticles  = 0;     // Number of Particles
   int        numIterations = 0;     // Number of Iterations
   particle_t gbest;                 // Global Best Particle Tracker
 
   // Parse Input Parameters
-  if( argc != 5 ) {
-    // Warn if nothing was passed.
-    printf( "WARNING - You passed no parameters for c1, c2, particle count, or timesteps!\n" );
+  if( argc != 7 ) {
+    fprintf( stderr, "\nWrong number of arguments.\n" );
+    printf( "Description: Scales an image down into a thumbnail.\n\n" );
+    printf( "Usage: %s <global> <local> <delta> <particles> <iterations> <display>\n", argv[0] );
+    printf( "  Global     - input .ppm file.\n" );
+    printf( "  Local      - desired output filename.ppm.\n" );
+    printf( "  Delta      - desired factor for position change amount.\n" );
+    printf( "  Particles  - number of particles to swarm.\n" );
+    printf( "  Iterations - number of steps to conduct swarm.\n" );
+    printf( "  Display    - 1 displays debug text, 0 just displays time values for raw data tables.\n" );
+    printf( "Example: ./swarm 0.5 0.5 0.1 12 1000 1\n\n");
     return -1;
   } else {
     // Takes n as that is specifically mentioned in the assignment.
     c1            = atof( argv[1] );
     c2            = atof( argv[2] );
-    numParticles  = atoi( argv[3] );
-    numIterations = atoi( argv[4] );
+    dt            = atof( argv[3] );
+    numParticles  = atoi( argv[4] );
+    numIterations = atoi( argv[5] );
+    display       = atoi( argv[6] );
   }
 
   // Create Arrays Dynamically Based on Input Parameters

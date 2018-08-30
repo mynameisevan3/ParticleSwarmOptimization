@@ -49,10 +49,20 @@
 
 
 // Definitions
-#define getSRand()	( (double)rand( ) / (double)RAND_MAX )
-#define PI		      ( (double)3.1415926 )
-#define getPoint()	( ( (10.0) * getSRand( ) ) - ( 5.0 ) )
 
+// Function to Optimize
+#define FITNESS_FUNCTION ( sin( 2.0 / ( *x ) ) + sin( 2.0 * ( *x ) ) + cos( ( *x ) ) + sin( 20.0 / ( *y ) ) )
+
+// Function Ranges
+#define X_MIN            -10.0
+#define X_MAX            10.0
+#define Y_MIN            -10.0
+#define Y_MAX            10.0
+
+// Functions
+#define getSRand()	     ( (double)rand( ) / (double)RAND_MAX )
+#define PI		           ( (double)3.1415926 )
+#define getPoint()	     ( ( (10.0) * getSRand( ) ) - ( 5.0 ) )
 
 // Global Types and Variables
 typedef struct {

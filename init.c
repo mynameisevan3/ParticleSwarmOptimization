@@ -56,7 +56,7 @@
 
 void storePbest( int *index, particle_t *particles, particle_t *pbest, particle_t *gbest ) {
   // Save the particle to its personal best.
-  memcpy( (void *)( pbest + ( *index ) ), (void *)( particles + ( *index ) ), sizeof( *particle_t ) );
+  memcpy( (void *)( pbest + ( *index ) ), (void *)( particles + ( *index ) ), sizeof( particle_t ) );
   // If this pbest is better than gbest, save it.
   if( ( ( pbest + ( *index) ) -> fitness ) > ( gbest -> fitness ) ) {
     gbest -> position.x = ( pbest + ( *index ) ) -> position.x;

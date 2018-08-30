@@ -50,7 +50,7 @@
 // checkFitness - maps fitness of particle at point to predefined fitness function.
 double checkFitness( double *x, double *y ) {
   // Given Fitness Function
-  return ( (double)( sin( 2.0 / ( *x ) ) + sin( 2.0 * ( *x ) ) + cos( ( *x ) ) + sin( 20.0 / ( *y ) ) ) );
+  return ( (double)( FITNESS_FUNCTION ) );
 }
 
 

@@ -53,31 +53,31 @@
 void moveParticle( int *i, double *c1, double *c2, double *dt, particle_t *particles, particle_t *pbest, particle_t *gbest ) {
 
   // Update the Position of the Particle
-  ( particles + *i ) -> position.x += ( particles + *i ) -> velocity.x * ( *dt ) );
-  ( particles + *i ) -> position.y += ( particles + *i ) -> velocity.y * ( *dt ) );
+  ( particles + *i ) -> position.x += ( ( particles + *i ) -> velocity.x * ( *dt ) );
+  ( particles + *i ) -> position.y += ( ( particles + *i ) -> velocity.y * ( *dt ) );
 
-  // Since we're interested only in the -5 to 5 range, we'll calculate fitness only over this range.
-  if ( ( ( particles + *i ) -> position.x > (-5.0 ) ) &&
-       ( ( particles + *i ) -> position.x < ( 5.0 ) ) &&
-       ( ( particles + *i ) -> position.y > (-5.0 ) ) &&
-       ( ( particles + *i ) -> position.y < ( 5.0 ) )    ) {
-    ( particles + *i ) -> fitness = checkFitness( ( particles + *i ) -> position.x, ( particles + *i ) -> position.y );
+  // Calculate Fitness Over Desired Range
+  if ( ( ( particles + *i ) -> position.x > ( X_MIN ) ) &&
+       ( ( particles + *i ) -> position.x < ( X_MAX ) ) &&
+       ( ( particles + *i ) -> position.y > ( Y_MIN ) ) &&
+       ( ( particles + *i ) -> position.y < ( Y_MAX ) )    ) {
+    ( particles + *i ) -> fitness = checkFitness( &( ( particles + *i ) -> position.x ), &( ( particles + *i ) -> position.y ) );
   }
 
-  // Write the particle's position and fitness to the trace file.
+  // Write Particle Position and Fitness to Trace File
   fprintf( ( particles + *i ) -> fp, "%lg, %lg, %lg\n",
            ( particles + *i ) -> position.x,
            ( particles + *i ) -> position.y,
            ( particles + *i ) -> fitness                 );
 
-  // Update the velocity vector of the particle.
-  particles[i].velocity.x +=
-    ( ( c1 * getSRand( ) * ( ( gbest -> position.x ) - ( ( particles + *i ) -> position.x ) ) ) +
-      ( c2 * getSRand( ) * ( ( ( pbest + *i ) -> position.x ) - ( ( particles + *i ) -> position.x ) ) ) );
+  // Update Velocity Vector of Particle.
+  ( ( particles + *i ) -> velocity.x ) +=
+    ( ( *c1 * getSRand( ) * ( ( gbest -> position.x ) - ( ( particles + *i ) -> position.x ) ) ) +
+      ( *c2 * getSRand( ) * ( ( ( pbest + *i ) -> position.x ) - ( ( particles + *i ) -> position.x ) ) ) );
 
-  particles[i].velocity.y +=
-    ( ( c1 * getSRand( ) * ( ( gbest -> position.y ) - ( ( particles + *i ) -> position.y ) ) ) +
-      ( c2 * getSRand( ) * ( ( ( pbest + *i ) -> position.y ) - ( ( particles + *i ) -> position.y ) ) ) );
+  ( ( particles + *i ) -> velocity.y ) +=
+    ( ( *c1 * getSRand( ) * ( ( gbest -> position.y ) - ( ( particles + *i ) -> position.y ) ) ) +
+      ( *c2 * getSRand( ) * ( ( ( pbest + *i ) -> position.y ) - ( ( particles + *i ) -> position.y ) ) ) );
 
   return;
 }
