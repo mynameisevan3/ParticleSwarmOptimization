@@ -82,8 +82,8 @@ int main( int argc, char *argv[] ) {
   if( argc != 8 ) {
     fprintf( stderr, "\nWrong number of arguments.\n" );
     printf( "Usage: %s <global> <local> <delta> <particles> <iterations> <cores> <display>\n", argv[0] );
-    printf( "  Global     - input .ppm file.\n" );
-    printf( "  Local      - desired output filename.ppm.\n" );
+    printf( "  Global     - weight placed on moving toward global best particle.\n" );
+    printf( "  Local      - weight placed on the best that this particle has discovered already.\n" );
     printf( "  Delta      - desired factor for position change amount.\n" );
     printf( "  Particles  - number of particles to swarm.\n" );
     printf( "  Iterations - number of steps to conduct swarm.\n" );
