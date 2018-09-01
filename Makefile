@@ -5,19 +5,25 @@
 
 CFLAGS  += -Wall -Wextra -fopenmp -O2
 LDFLAGS += -lm
-OBJS    += main.o init.o fitness.o swarm.o
+POBJS   += mainOMP.o init.o fitness.o swarm.o
+SOBJS   += mainSerial.o init.o fitness.o swarm.o
 
 ################################################################
 # Make all
 
-all:	swarm
+all:	swarm swarmS
 
 ################################################################
-# Make Swarm
+# Make Swarm (Parallel)
 
-swarm: $(OBJS) pso.h
-	$(CC) $(CFLAGS) $(OBJS) $(LDFLAGS) -o $@
+swarm: $(POBJS) pso.h
+	$(CC) $(CFLAGS) $(POBJS) $(LDFLAGS) -o $@
 
+################################################################
+# Make Swarm (Serial Baseline)
+
+swarmS: $(SOBJS) pso.h
+	$(CC) $(CFLAGS) $(SOBJS) $(LDFLAGS) -o $@
 
 ################################################################
 
@@ -28,7 +34,7 @@ swarm: $(OBJS) pso.h
 # Make Clean
 
 clean:
-	rm -f swarm *.o particle??.txt
+	rm -f swarm swarmS *.o particle??.txt
 
 .PHONY: clean
 
@@ -36,4 +42,4 @@ clean:
 
 
 
-# END MAKEFILE  - EWG SDG
+# End Makefile for Particle Swarm Optimization Application  - EWG SDG

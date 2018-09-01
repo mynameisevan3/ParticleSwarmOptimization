@@ -1,7 +1,7 @@
 
 /*=====================================
     Particle Swarm Optimization
-    Main
+    OpenMP Parallelized Main
     mtj@cogitollc.com
     Used and Modified with Permission
     Evan William Gretok
@@ -56,6 +56,7 @@ int main( int argc, char *argv[] ) {
   double     c1            = 0.25;  // Global Weight
   double     c2            = 1.0;   // Local Weight
   double     dt            = 0.1;   // Delta Factor for Position Change
+  int        cores         = 1;     // Number of Cores to Utilize for Parallelization
   int        display       = 0;     // Flag to Display Debug Text
   int        i             = 0;     // Loop Iteration
   int        numParticles  = 0;     // Number of Particles
@@ -78,17 +79,17 @@ int main( int argc, char *argv[] ) {
   double     jobTime       = 0;     // Total Program Time
 
   // Parse Input Parameters
-  if( argc != 7 ) {
-    fprintf( stderr, "Wrong number of arguments.\n" );
-    printf( "Description: Scales an image down into a thumbnail.\n\n" );
-    printf( "Usage: %s <global> <local> <delta> <particles> <iterations> <display>\n", argv[0] );
+  if( argc != 8 ) {
+    fprintf( stderr, "\nWrong number of arguments.\n" );
+    printf( "Usage: %s <global> <local> <delta> <particles> <iterations> <cores> <display>\n", argv[0] );
     printf( "  Global     - input .ppm file.\n" );
     printf( "  Local      - desired output filename.ppm.\n" );
     printf( "  Delta      - desired factor for position change amount.\n" );
     printf( "  Particles  - number of particles to swarm.\n" );
     printf( "  Iterations - number of steps to conduct swarm.\n" );
+    printf( "  Cores      - number of cores to utilize for parallelization.\n" );
     printf( "  Display    - 1 displays debug text, 0 just displays time values for raw data tables.\n" );
-    printf( "Example: ./swarm 0.5 0.5 0.1 12 1000 1\n\n");
+    printf( "Example: ./swarm 0.5 0.5 0.1 12 100 4 1\n\n");
     return -1;
   } else {
     // Takes n as that is specifically mentioned in the assignment.
@@ -97,7 +98,8 @@ int main( int argc, char *argv[] ) {
     dt            = atof( argv[3] );
     numParticles  = atoi( argv[4] );
     numIterations = atoi( argv[5] );
-    display       = atoi( argv[6] );
+    cores         = atoi( argv[6] );
+    display       = atoi( argv[7] );
   }
 
   // Intro Text
@@ -105,23 +107,32 @@ int main( int argc, char *argv[] ) {
     printf( "\n   = = =  Particle Swarm Optimization  = = =   \n\n" );
   }
 
-  // Set Job Start and Initialization Timer
-  jobStart  = omp_get_wtime( );
+  // OpenMP Initial Tasks and Tests
+  omp_set_num_threads( cores );
+  if( display ) {
+    printf( "\nUsing %d Cores of Maximum %d Cores Available\nTesting - Report\n", cores, omp_get_max_threads( ) );
+    #pragma omp parallel for
+    for( size_t i = 0; i < (size_t)omp_get_num_threads( ); i++ ) {
+      printf( "  Core %d of %d Reporting!\n", omp_get_thread_num( ), omp_get_num_threads( ) );
+    }
+  }
+
+  // Set Job Start Timer
+  jobStart = omp_get_wtime( );
+
+  // Initialize Swarm Components
   if( display ) {
     printf( "Initializing Swarm Components...\n" );
   }
   initStart = omp_get_wtime( );
-
   // Create Arrays Dynamically Based on Input Parameters
   particle_t particles[numParticles];
   particle_t pbest[numParticles];
-
   // Seed Random Number Generator
   srand( time( NULL ) );
-
   // Initialize Swarm
   initPopulation( &numParticles, particles, pbest, &gbest );
-  initEnd = omp_get_wtime( );
+  initEnd   = omp_get_wtime( );
 
   // Perform Particle Swarm Operation
   if( display ) {
@@ -183,4 +194,4 @@ int main( int argc, char *argv[] ) {
 
 
 
-// End main.c  - EWG SDG
+// End mainOMP.c  - EWG SDG

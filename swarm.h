@@ -52,6 +52,7 @@
 // Function Prototypes
 void moveParticle( int *i, double *c1, double *c2, double *dt, particle_t *particles, particle_t *pbest, particle_t *gbest );
 void moveSwarm( double *c1, double *c2, double *dt, int *numParticles, particle_t *particles, particle_t *pbest, particle_t *gbest );
+void moveSwarmS( double *c1, double *c2, double *dt, int *numParticles, particle_t *particles, particle_t *pbest, particle_t *gbest );
 
 
 // End Include Guard
