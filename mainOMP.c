@@ -111,7 +111,7 @@ int main( int argc, char *argv[] ) {
   // OpenMP Initial Tasks and Tests
   omp_set_num_threads( cores );
   if( display ) {
-    printf( "\nUsing %d Cores of Maximum %d Cores Available\nTesting - Report\n", cores, omp_get_max_threads( ) );
+    printf( "Using %d Cores of Maximum %d Cores Available\nTesting - Report\n", cores, omp_get_max_threads( ) );
     #pragma omp parallel for
     for( size_t i = 0; i < (size_t)omp_get_num_threads( ); i++ ) {
       printf( "  Core %d of %d Reporting!\n", omp_get_thread_num( ), omp_get_num_threads( ) );
@@ -141,22 +141,19 @@ int main( int argc, char *argv[] ) {
               numParticles, numIterations                          );
   }
   swarmStart = omp_get_wtime( );
-  #pragma omp parallel shared( c1, c2, dt, numParticles,     \
-                               particles, pbest, gbest ) \
+  #pragma omp parallel shared( c1, c2, dt, numParticles,   \
+                               particles, pbest, gbest   ) \
                        private( j )
   for( i = 0; i < numIterations; i++ ) {
     // For parallel version of particle swarm, moveSwarm call is removed and
-    //   handled in here to parallelize more effectively.
-    #pragma omp for
+    //   handled directly in here to parallelize more effectively.
+    #pragma omp for schedule( guided ) nowait
     for( j = 0; j < numParticles; j++ ) {
-printf( "Moving Particle %d...\n", j );
       moveParticle( &j, &c1, &c2, &dt, particles, pbest, &gbest );
-printf( "Checking Particle %d...\n", j );
       if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
        storePbest( &j, particles, pbest, &gbest );
       }
     }
-printf( "Particle %d Complete\n", j );
   }
   swarmEnd   = omp_get_wtime( );
 
