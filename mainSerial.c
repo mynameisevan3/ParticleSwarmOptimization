@@ -128,7 +128,8 @@ int main( int argc, char *argv[] ) {
   }
   swarmStart = omp_get_wtime( );
   for( i = 0; i < numIterations; i++ ) {
-    moveSwarmS( &c1, &c2, &dt, &numParticles, particles, pbest, &gbest );
+    // moveSwarm is here left as a serial-only method.
+    moveSwarm( &c1, &c2, &dt, &numParticles, particles, pbest, &gbest );
   }
   swarmEnd   = omp_get_wtime( );
 

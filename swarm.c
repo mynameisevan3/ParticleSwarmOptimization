@@ -83,24 +83,8 @@ void moveParticle( int *i, double *c1, double *c2, double *dt, particle_t *parti
 }
 
 
-// moveSwarm - conduct movement of each particle in the swarm in parallel.
+// moveSwarm - serially conduct movement of each particle in the swarm.
 void moveSwarm( double *c1, double *c2, double *dt, int *numParticles,
-                particle_t *particles, particle_t *pbest, particle_t *gbest ) {
-  printf( "DEPRICATED: Parallel swarm handled differently.\n" );
-  int j = 0;
-  // Move Each Particle in the Swarm
-  for( j = 0; j < ( *numParticles ); j++ ) {
-    moveParticle( &j, c1, c2, dt, particles, pbest, gbest );
-    if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
-      storePbest( &j, particles, pbest, gbest );
-    }
-  }
-  return;
-}
-
-
-// moveSwarmS - serially conduct movement of each particle in the swarm.
-void moveSwarmS( double *c1, double *c2, double *dt, int *numParticles,
                  particle_t *particles, particle_t *pbest, particle_t *gbest ) {
   int j = 0;
 
