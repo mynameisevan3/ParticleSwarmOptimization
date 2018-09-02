@@ -58,7 +58,8 @@ int main( int argc, char *argv[] ) {
   double     dt            = 0.1;   // Delta Factor for Position Change
   int        cores         = 1;     // Number of Cores to Utilize for Parallelization
   int        display       = 0;     // Flag to Display Debug Text
-  int        i             = 0;     // Loop Iteration
+  int        i             = 0;     // Number of Iterations Loop Iterator
+  int        j             = 0;     // Number of Particles Loop Iterator
   int        numParticles  = 0;     // Number of Particles
   int        numIterations = 0;     // Number of Iterations
   particle_t gbest;                 // Global Best Particle Tracker
@@ -140,8 +141,22 @@ int main( int argc, char *argv[] ) {
               numParticles, numIterations                          );
   }
   swarmStart = omp_get_wtime( );
+  #pragma omp parallel shared( c1, c2, dt, numParticles,     \
+                               particles, pbest, gbest ) \
+                       private( j )
   for( i = 0; i < numIterations; i++ ) {
-    moveSwarm( &c1, &c2, &dt, &numParticles, particles, pbest, &gbest );
+    // For parallel version of particle swarm, moveSwarm call is removed and
+    //   handled in here to parallelize more effectively.
+    #pragma omp for
+    for( j = 0; j < numParticles; j++ ) {
+printf( "Moving Particle %d...\n", j );
+      moveParticle( &j, &c1, &c2, &dt, particles, pbest, &gbest );
+printf( "Checking Particle %d...\n", j );
+      if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
+       storePbest( &j, particles, pbest, &gbest );
+      }
+    }
+printf( "Particle %d Complete\n", j );
   }
   swarmEnd   = omp_get_wtime( );
 
