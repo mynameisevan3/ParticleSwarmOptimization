@@ -1,15 +1,24 @@
 
 #!/bin/sh
 
-# Automation of Particle Swarm Power Measure Collection
+# Simple Tests of Particle Swarm Parallelization
 
 # Variable Definitions
-coreStart=1
-coreEnd=4
+aStart=1
+aEnd=4
+aInc=1
+aMult=1
+bStart=1
+bEnd=1
+bInc=1
+bMult=1
 
 # Header
-echo "Particle Swarm Power Measure Run"
-# No File Generation Here - Just for Power Measures
+echo "Particle Swarm Parallelization Test"
+# Header for File
+echo                                        > $outfile.txt
+echo "Particle Swarm Parallelization Test" >> $outfile.txt
+echo                                       >> $outfile.txt
 
 # Make Program
 make clean
@@ -20,7 +29,7 @@ echo
 ./swarm 0.5 0.5 0.1 12 3000 4 1
 
 # Automated Run Loop with Varying Core Utilization
-for cores in `seq $coreStart $coreEnd`
+for a in `seq $aStart $aEnd`
 do
   echo " "
   echo "Running with $cores Cores..."

@@ -16,9 +16,6 @@ make clean                                                 >> $outfile.txt
 make                                                       >> $outfile.txt
 echo                                                       >> $outfile.txt
 
-# Command Structure Echo for Verification (may remove)
-echo "./swarmS 0.5 0.5 0.1 12 3000 1 >> $outfile.txt"
-
 # Initial Test Run - shows which values are which.
 ./swarmS 0.5 0.5 0.1 12 3000 1                             >> $outfile.txt
 echo                                                       >> $outfile.txt
