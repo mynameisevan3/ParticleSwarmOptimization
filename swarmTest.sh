@@ -4,14 +4,14 @@
 # Simple Tests of Particle Swarm Parallelization
 
 # Variable Definitions
-aStart=1
-aEnd=4
+a=1
+aEnd=16
 aInc=1
 aMult=1
-bStart=1
-bEnd=1
-bInc=1
-bMult=1
+b=100
+bEnd=10001
+bInc=0
+bMult=10
 
 # Header
 echo "Particle Swarm Parallelization Test"
@@ -29,26 +29,21 @@ echo
 ./swarm 0.5 0.5 0.1 12 3000 4 1
 
 # Automated Run Loop with Varying Core Utilization
-for a in `seq $aStart $aEnd`
+while [ $a -lt $aEnd ]
 do
-  echo " "
-  echo "Running with $cores Cores..."
-  iteration=0
-  final=100
-  while [ $iteration -lt $final ]
+  while [ $b -lt $bEnd ]
   do
     # Remove Previous Output Images
     rm particle*.txt
 
     # Run Application
-    p=$(./swarm 0.5 0.5 0.1 12 3000 $cores 0)
-
-    # Indicate Status
-    echo "Iteration $iteration $p"
+    echo "Run with $a Cores for $b Iterations"
+    #p=$(./swarm 0.5 0.5 0.1 12 3000 $cores 0)
 
     # Iterate Loop
-    iteration=$((iteration+1))
+    b=$((b*bMult+bInc))
   done
+  a=$((a*aMult+aInc))
 done
 
 
