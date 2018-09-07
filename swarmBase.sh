@@ -29,7 +29,7 @@ iteration=0
 final=1000
 while [ $iteration -lt $final ]
 do
-  # Remove Previous Output Images
+  # Remove Previous Output
   rm particle*.txt
 
   # Collect Data

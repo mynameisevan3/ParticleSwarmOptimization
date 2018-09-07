@@ -28,7 +28,7 @@ do
   final=100
   while [ $iteration -lt $final ]
   do
-    # Remove Previous Output Images
+    # Remove Previous Output
     rm particle*.txt
 
     # Run Application
