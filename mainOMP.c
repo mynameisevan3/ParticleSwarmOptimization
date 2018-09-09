@@ -141,22 +141,26 @@ int main( int argc, char *argv[] ) {
               numParticles, numIterations                          );
   }
   swarmStart = omp_get_wtime( );
-  #pragma omp parallel shared( c1, c2, dt, numParticles,   \
-                               particles, pbest, gbest   ) \
-                       private( j )
-  for( i = 0; i < numIterations; i++ ) {
-    // For parallel version of particle swarm, moveSwarm call is removed and
-    //   handled directly in here to parallelize more effectively.
-    #pragma omp for schedule( static ) nowait
-    for( j = 0; j < numParticles; j++ ) {
-      moveParticle( &j, &c1, &c2, &dt, particles, pbest, &gbest );
-      if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
-       storePbest( &j, particles, pbest, &gbest );
+  #pragma omp parallel shared( c1, c2, dt, numParticles, numIterations,   \
+                               particles, pbest, gbest                  ) \
+                       private( i, j )
+  {
+    for( i = 0; i < numIterations; i++ ) {
+      // For parallel version of particle swarm, moveSwarm call is removed and
+      //   handled directly in here to parallelize more effectively.
+      #pragma omp for schedule( static )
+      for( j = 0; j < numParticles; j++ ) {
+        moveParticle( &j, &c1, &c2, &dt, particles, pbest, &gbest );
+        if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
+         storePbest( &j, particles, pbest, &gbest );
+        }
+        //printf( "Iteration %d: Particle %d Complete by Thread %d\n", i, j, omp_get_thread_num( ) );
       }
+      #pragma omp barrier
     }
   }
   swarmEnd   = omp_get_wtime( );
-
+  
   // Display Optimum Data
   if( display ) {
     printf( "Best of %lf Found at ( %lf, %lf )\n",
