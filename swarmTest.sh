@@ -12,10 +12,10 @@ outerLoopEnd=5
 outerLoopMult=1
 outerLoopInc=1
 innerLoopIndex=0
-innerLoopStart=100
-innerLoopEnd=10001
-innerLoopMult=10
-innerLoopInc=0
+innerLoopStart=4
+innerLoopEnd=17
+innerLoopMult=1
+innerLoopInc=4
 resultLoopIndex=0
 resuLoopStart=1
 resultLoopEnd=11
@@ -39,16 +39,19 @@ echo
 ./swarm 0.5 0.5 0.1 12 3000 4 1
 
 # Automated Testing Loop
+
+# Outer Loop Used For: Cores
 outerLoopIndex=$((outerLoopStart))
 while [ $outerLoopIndex -lt $outerLoopEnd ]
 do
 
+  # Inner Loop Used For: Particles
   innerLoopIndex=$((innerLoopStart))
   while [ $innerLoopIndex -lt $innerLoopEnd ]
   do
 
       # Display Current Iteration
-      echo "Run with $outerLoopIndex Cores for $innerLoopIndex Iterations"
+      echo "Run with $outerLoopIndex Cores for $innerLoopIndex Particles"
 
       # Loop to Collect Multiple Results
       resultLoopIndex=$((resultLoopStart))
@@ -59,7 +62,8 @@ do
         rm particle*.txt
 
         # Run Application
-        result=$(./swarm 0.5 0.5 0.1 12 $innerLoopIndex $outerLoopIndex 0)
+        # ./swarm <global> <local> <delta> <particles> <iterations> <cores> <display>
+        result=$(./swarm 0.5 0.5 0.1 $innerLoopIndex 3000 $outerLoopIndex 0)
         sum=$(echo "$sum+$result" | bc)
 
         # Echo Result for Testing

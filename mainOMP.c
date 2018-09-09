@@ -157,10 +157,14 @@ int main( int argc, char *argv[] ) {
         //printf( "Iteration %d: Particle %d Complete by Thread %d\n", i, j, omp_get_thread_num( ) );
       }
       #pragma omp barrier
+      //#pragma omp master
+      //{
+      //  printf( "================================================\n" );
+      //}
     }
   }
   swarmEnd   = omp_get_wtime( );
-  
+
   // Display Optimum Data
   if( display ) {
     printf( "Best of %lf Found at ( %lf, %lf )\n",
