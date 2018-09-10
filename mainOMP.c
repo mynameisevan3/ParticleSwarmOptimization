@@ -148,7 +148,7 @@ int main( int argc, char *argv[] ) {
     for( i = 0; i < numIterations; i++ ) {
       // For parallel version of particle swarm, moveSwarm call is removed and
       //   handled directly in here to parallelize more effectively.
-      #pragma omp for schedule( static, 1 ) nowait
+      #pragma omp for schedule( static )
       for( j = 0; j < numParticles; j++ ) {
         moveParticle( &j, &c1, &c2, &dt, particles, pbest, &gbest );
         if( ( ( particles + j ) -> fitness ) > ( ( pbest + j ) -> fitness ) ) {
@@ -156,7 +156,7 @@ int main( int argc, char *argv[] ) {
         }
         //printf( "Iteration %d: Particle %d Complete by Thread %d\n", i, j, omp_get_thread_num( ) );
       }
-      #pragma omp barrier
+      //#pragma omp barrier
     }
   }
   swarmEnd   = omp_get_wtime( );

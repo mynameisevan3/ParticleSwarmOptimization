@@ -16,11 +16,27 @@ Test      Functional    Max(Iter)   Swarm       12/3000
 0101(5):  Hang OoO      0.0053
 0110(6):  Fail OoO      0.0011
 0111(7):  Hang OoO      0.0028
-1000(8):  Comp IO       0.0030      0.007671    0.183811    RT1.txt
+1000(8):  Comp IO       0.0030      0.007671    0.183811    RT1.txt (FS)
 1001(9):  Comp IO       0.0031      0.010625    0.194572    RT2.txt
 1010(A):  Comp OoO      0.0023
 1011(B):  Comp IO       0.0034      0.004995    0.182315    RT3.txt
 1100(C):  Comp IO       0.0030      0.005612    0.150614    RT4.txt
 1101(D):  Comp IO       0.0064      0.010751    0.178715    RT5.txt
 1110(E):  Comp Oo       0.0045
-1111(F):  Comp IO       0.0044      0.005543    0.157789    RT6.txt
+1111(F):  Comp IO       0.0044      0.005543    0.157789    RT6.txt (S)
+
+Observations:
+  Sharing i causes hangups or failures; must privatize it.
+  Coupling a nowait with no barrier causes out-of-order particle runs.
+  Barriers induce some overhead and lengthened timings.
+  Static, 1 produces no significant performance increase.
+  A standard for without nowait does not require a barrier.
+    This seems to result in best performance.
+
+Settled on Private I, Static, No NoWait, No Barrier
+
+Additional Tests
+Test        Functional  Swarm       12/3000
+Dynamic     Comp IO     0.006625    1.379002    DYN.txt
+Dynamic, 2  Comp IO     0.005614    1.379160    DY2.txt
+Guided      Comp IO     0.000697    1.337681    GUI.txt
