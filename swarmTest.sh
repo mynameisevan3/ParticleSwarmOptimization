@@ -12,10 +12,10 @@ outerLoopEnd=5
 outerLoopMult=1
 outerLoopInc=1
 innerLoopIndex=0
-innerLoopStart=4
-innerLoopEnd=17
+innerLoopStart=3000
+innerLoopEnd=7001
 innerLoopMult=1
-innerLoopInc=4
+innerLoopInc=1000
 resultLoopIndex=0
 resuLoopStart=1
 resultLoopEnd=11
@@ -45,13 +45,13 @@ outerLoopIndex=$((outerLoopStart))
 while [ $outerLoopIndex -lt $outerLoopEnd ]
 do
 
-  # Inner Loop Used For: Particles
+  # Inner Loop Used For: Iterations
   innerLoopIndex=$((innerLoopStart))
   while [ $innerLoopIndex -lt $innerLoopEnd ]
   do
 
       # Display Current Iteration
-      echo "Run with $outerLoopIndex Cores for $innerLoopIndex Particles"
+      echo "Run with $outerLoopIndex Cores for $innerLoopIndex Iterations"
 
       # Loop to Collect Multiple Results
       resultLoopIndex=$((resultLoopStart))
@@ -63,7 +63,7 @@ do
 
         # Run Application
         # ./swarm <global> <local> <delta> <particles> <iterations> <cores> <display>
-        result=$(./swarm 0.5 0.5 0.1 $innerLoopIndex 3000 $outerLoopIndex 0)
+        result=$(./swarm 0.5 0.5 0.1 12 $innerLoopIndex $outerLoopIndex 0)
         sum=$(echo "$sum+$result" | bc)
 
         # Echo Result for Testing
